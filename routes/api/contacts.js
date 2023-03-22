@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const contacts = require('../api/contacts')
+const contacts = require("../../controllers/controller")
 
 router.get('/contacts', contacts.get)
 router.get('/contacts/:contactId', contacts.getById)
