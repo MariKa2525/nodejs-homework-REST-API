@@ -1,40 +1,32 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
+const express = require('express')
+const cors = require('cors')
+const mongoose = require('mongoose')
 
-const app = express();
+require('dotenv').config()
+const PORT = process.env.PORT || 3000
 
-app.use(express.json());
-app.use(cors());
+const app = express()
 
-const contactsRouter = require('./routes/api/contacts');
-app.use('/api/contacts', contactsRouter);
+app.use(express.json())
+app.use(cors())
 
-app.use((_, res, __) => {
-  res.status(404).json({
-    status: 'error',
-    code: 404,
-    message: 'Use api on routes: /api/contacts',
-    data: 'Not found',
-  })
+const userRouter = require('./routes/userRouter')
+app.use('/users/', userRouter)
+
+const contactsRouter = require('./routes/api/contacts')
+app.use('/api/contacts', contactsRouter)
+
+app.use((err, req, res, next) => {
+  const { message, statusCode = 500 } = err
+  res.status(statusCode).json({ error: message })
 })
 
-app.use((err, _, res, __) => {
-  console.log(err.stack)
-  res.status(500).json({
-    status: 'fail',
-    code: 500,
-    message: err.message,
-    data: 'Internal Server Error',
-  })
-})
-
-const urlDb = "mongodb+srv://mkonopikhina25:aMueC0VQkM5SZ83Q@cluster0.9e87vyr.mongodb.net/?retryWrites=true&w=majority"
-mongoose.connect(urlDb)
-  .then(() => 
-    app.listen(3000, () => console.log("Database connection successfull")))
-  .catch(error => {
+mongoose
+  .connect(PORT)
+  .then(() =>
+    app.listen(3000, () => console.log('Database connection successfull')),
+  )
+  .catch((error) => {
     console.log(error.message)
     process.exit(1)
-})
-
+  })
