@@ -19,6 +19,10 @@ const user = new Schema({
   token: {
     type: String,
   },
+  avatarURL: {
+    type: String,
+    required: true
+}
 })
 
 const User = mongoose.model('user', user)
