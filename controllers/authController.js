@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const gravatar = require("gravatar");
 const path = require('path');
-const fs = require('fs/promises'); 
+const fs = require('fs/promises');
 
 const register = async (req, res, next) => {
   try {
